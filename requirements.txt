@@ -1,0 +1,23 @@
+# Core — required regardless of which AI provider you use.
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-core>=0.3.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+streamlit>=1.38.0
+
+# ── Provider integration ────────────────────────────────────────────────
+# Install the LangChain package for whichever provider you set via
+# LLM_PROVIDER in .env. Only one is required — pick yours and comment
+# out/remove the rest, or leave them all if you like switching providers.
+langchain-google-genai>=2.0.0   # LLM_PROVIDER=google_genai (Gemini)
+# langchain-anthropic>=0.3.0    # LLM_PROVIDER=anthropic (Claude)
+# langchain-openai>=0.2.0       # LLM_PROVIDER=openai (GPT)
+# langchain-groq>=0.2.0         # LLM_PROVIDER=groq
+# langchain-mistralai>=0.2.0    # LLM_PROVIDER=mistralai
+# langchain-xai>=0.1.0          # LLM_PROVIDER=xai (Grok)
+# langchain-ollama>=0.2.0       # LLM_PROVIDER=ollama (local, no API key)
+# langchain-fireworks>=0.2.0    # LLM_PROVIDER=fireworks
+# langchain-together>=0.2.0     # LLM_PROVIDER=together
+# langchain-cohere>=0.3.0       # LLM_PROVIDER=cohere
+# langchain-aws>=0.2.0          # LLM_PROVIDER=bedrock

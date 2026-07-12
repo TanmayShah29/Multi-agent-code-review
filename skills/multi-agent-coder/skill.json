@@ -1,0 +1,17 @@
+{
+  "name": "multi-agent-coder",
+  "version": "1.0.0",
+  "description": "Multi-agent coding pipeline: Planner → Validator → Coder → Reviewer → Executor → Tester → Independent Executor. Generates, reviews, tests, and validates code autonomously.",
+  "entry_point": "run.py",
+  "config": {
+    "LLM_PROVIDER": "google_genai",
+    "AGENT_MODEL": "gemini-2.5-flash",
+    "MAX_ITERATIONS": 4,
+    "EXECUTION_TIMEOUT": 10,
+    "SANDBOX_BACKEND": "subprocess"
+  },
+  "env_requirements": [
+    "GEMINI_API_KEY"
+  ],
+  "tags": ["coding", "multi-agent", "code-generation", "code-review", "testing"]
+}
