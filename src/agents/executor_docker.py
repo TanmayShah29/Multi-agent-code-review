@@ -11,18 +11,23 @@ image available (pulled automatically on first run).
 import subprocess
 import tempfile
 import os
-from typing import Optional, Tuple
 from src.config import EXECUTION_TIMEOUT
 from src.state import AgentState
 
 DOCKER_IMAGE = "python:3.11-slim"
 
 
-def _run_in_docker(code: str, timeout: int) -> Tuple[bool, str, Optional[str]]:
+def _run_in_docker(
+    files: dict[str, str], entry_point: str, timeout: int
+) -> tuple[bool, str, str | None]:
     with tempfile.TemporaryDirectory() as tmp_dir:
-        script_path = os.path.join(tmp_dir, "solution.py")
-        with open(script_path, "w") as f:
-            f.write(code)
+        for rel_path, content in files.items():
+            full_path = os.path.join(tmp_dir, rel_path)
+            os.makedirs(os.path.dirname(full_path), exist_ok=True)
+            with open(full_path, "w") as f:
+                f.write(content)
+
+        entry_path = os.path.join(tmp_dir, entry_point)
 
         cmd = [
             "docker", "run", "--rm",
@@ -33,7 +38,7 @@ def _run_in_docker(code: str, timeout: int) -> Tuple[bool, str, Optional[str]]:
             "-v", f"{tmp_dir}:/sandbox:ro",
             "-w", "/sandbox",
             DOCKER_IMAGE,
-            "python", "solution.py",
+            "python", entry_point,
         ]
 
         try:
@@ -58,7 +63,9 @@ def _run_in_docker(code: str, timeout: int) -> Tuple[bool, str, Optional[str]]:
 
 
 def executor_docker_node(state: AgentState) -> AgentState:
-    passed, output, error = _run_in_docker(state["code"], EXECUTION_TIMEOUT)
+    files = state.get("files") or {"main.py": state["code"]}
+    entry_point = state.get("entry_point", "main.py")
+    passed, output, error = _run_in_docker(files, entry_point, EXECUTION_TIMEOUT)
     return {
         **state,
         "execution_passed": passed,

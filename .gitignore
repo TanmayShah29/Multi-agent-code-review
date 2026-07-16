@@ -4,3 +4,7 @@ __pycache__/
 .env
 runs/
 .DS_Store
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.log
